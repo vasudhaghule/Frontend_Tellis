@@ -27,7 +27,7 @@ const Start = () => {
     setErrors(errs);
     if (Object.keys(errs).length === 0) {
       alert("Application started!");
-      // Submit logic here
+     
     }
   };
 
