@@ -1,162 +1,221 @@
-import React from "react";
+import React, { useState } from "react";
 import Simg from "../assets/betty1.webp";
 
 const Start = () => {
-  const containerStyle = {
-    minHeight: "100vh",
-    background: "linear-gradient(135deg, #c7d2fe, #e9d5ff, #fbcfe8)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "40px 20px",
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    propertyType: "Home Purchase",
+  });
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const errs = {};
+    if (!form.name.trim()) errs.name = "Full Name is required";
+    if (!form.email.trim()) errs.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(form.email)) errs.email = "Invalid email";
+    return errs;
   };
 
-  const boxStyle = {
-    background: "rgba(255, 255, 255, 0.85)",
-    backdropFilter: "blur(14px)",
-    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.15)",
-    borderRadius: "20px",
-    padding: "40px 30px",
-    width: "100%",
-    maxWidth: "420px",
-    border: "1px solid rgba(255, 255, 255, 0.3)",
-    transition: "transform 0.3s ease",
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const imgStyle = {
-    width: "90px",
-    height: "90px",
-    borderRadius: "50%",
-    display: "block",
-    margin: "0 auto 24px",
-    boxShadow: "0 6px 12px rgba(0, 0, 0, 0.15)",
-    border: "4px solid white",
-    objectFit: "cover",
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const errs = validate();
+    setErrors(errs);
+    if (Object.keys(errs).length === 0) {
+      alert("Application started!");
+      // Submit logic here
+    }
   };
-
-  const headingStyle = {
-    fontSize: "26px",
-    fontWeight: "700",
-    color: "#4338ca",
-    textAlign: "center",
-    marginBottom: "16px",
-    letterSpacing: "0.5px",
-  };
-
-  const descStyle = {
-    textAlign: "center",
-    color: "#4b5563",
-    fontSize: "15px",
-    marginBottom: "32px",
-  };
-
-  const labelStyle = {
-    display: "block",
-    fontSize: "14px",
-    color: "#374151",
-    marginBottom: "6px",
-    fontWeight: "500",
-  };
-
-  const inputStyle = {
-    width: "100%",
-    padding: "12px 16px",
-    border: "1px solid #d1d5db",
-    borderRadius: "10px",
-    outline: "none",
-    marginBottom: "20px",
-    transition: "box-shadow 0.2s ease, border 0.2s ease",
-    fontSize: "14px",
-    boxSizing: "border-box",
-  };
-
-  const inputFocusStyle = {
-    ...inputStyle,
-    border: "1px solid #6366f1",
-    boxShadow: "0 0 0 3px rgba(99, 102, 241, 0.2)",
-  };
-
-  const buttonStyle = {
-    width: "100%",
-    padding: "14px",
-    backgroundColor: "#4f46e5",
-    color: "white",
-    fontWeight: "600",
-    border: "none",
-    borderRadius: "10px",
-    cursor: "pointer",
-    fontSize: "16px",
-    letterSpacing: "0.5px",
-    transition: "transform 0.2s ease, background 0.2s ease",
-  };
-
-  const buttonHoverStyle = {
-    ...buttonStyle,
-    backgroundColor: "#4338ca",
-    transform: "scale(1.02)",
-  };
-
-  const [inputFocus, setInputFocus] = React.useState(null);
-  const [hovered, setHovered] = React.useState(false);
 
   return (
-    <div style={containerStyle}>
-      <div style={boxStyle}>
-        <img src={Simg} alt="Betty" style={imgStyle} />
-
-        <h2 style={headingStyle}>Start Your Mortgage Application</h2>
-
-        <p style={descStyle}>
-          Fill in a few basic details to begin your journey.
-        </p>
-
-        <form>
-          <div>
-            <label style={labelStyle}>Full Name</label>
-            <input
-              type="text"
-              placeholder="Enter your full name"
-              style={inputFocus === "name" ? inputFocusStyle : inputStyle}
-              onFocus={() => setInputFocus("name")}
-              onBlur={() => setInputFocus(null)}
-            />
-          </div>
-
-          <div>
-            <label style={labelStyle}>Email Address</label>
-            <input
-              type="email"
-              placeholder="vasudhaghule33@gmail.com"
-              style={inputFocus === "email" ? inputFocusStyle : inputStyle}
-              onFocus={() => setInputFocus("email")}
-              onBlur={() => setInputFocus(null)}
-            />
-          </div>
-
-          <div>
-            <label style={labelStyle}>Property Type</label>
-            <select
-              style={inputFocus === "select" ? inputFocusStyle : inputStyle}
-              onFocus={() => setInputFocus("select")}
-              onBlur={() => setInputFocus(null)}
+    <>
+      <style>{`
+        .start-bg {
+          min-height: 100vh;
+          background: linear-gradient(120deg, #e0e7ff 0%, #f0abfc 100%);
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          padding: 60px 10px 40px 10px;
+        }
+        .start-card {
+          background: #fff;
+          box-shadow: 0 8px 32px rgba(31,41,55,0.12);
+          border-radius: 18px;
+          padding: 40px 36px 32px 36px;
+          width: 100%;
+          max-width: 410px;
+          border: 1px solid #ede9fe;
+          transition: box-shadow 0.2s;
+          margin-top: 0;
+        }
+        .start-card:hover {
+          box-shadow: 0 12px 40px rgba(99,102,241,0.18);
+        }
+        .start-img {
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          margin: 0 auto 16px auto;
+          display: block;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+          border: 3px solid #fff;
+          object-fit: cover;
+        }
+        .start-title {
+          font-size: 1.7rem;
+          font-weight: 700;
+          text-align: center;
+          color: #4f46e5;
+          margin-bottom: 12px;
+          letter-spacing: -0.5px;
+        }
+        .start-desc {
+          text-align: center;
+          color: #6b7280;
+          margin-bottom: 28px;
+          font-size: 1.05rem;
+        }
+        .start-form {
+          display: flex;
+          flex-direction: column;
+          gap: 22px;
+        }
+        .start-form-group {
+          display: flex;
+          flex-direction: column;
+          text-align: left;
+        }
+        .start-label {
+          font-size: 1rem;
+          color: #374151;
+          margin-bottom: 7px;
+          font-weight: 500;
+          text-align: left;
+          letter-spacing: 0.2px;
+          display: block;
+        }
+        .start-input, .start-select {
+          width: 100%;
+          padding: 12px 14px;
+          border: 1.5px solid #d1d5db;
+          border-radius: 7px;
+          font-size: 1rem;
+          background: #f9fafb;
+          color: #1e293b;
+          outline: none;
+          transition: border 0.2s, box-shadow 0.2s;
+        }
+        .start-input:focus, .start-select:focus {
+          border: 1.5px solid #6366f1;
+          box-shadow: 0 0 0 2px #a5b4fc55;
+          background: #fff;
+        }
+        .start-btn {
+          width: 100%;
+          padding: 13px 0;
+          background: linear-gradient(90deg, #6366f1 60%, #a21caf 100%);
+          color: #fff;
+          font-weight: 600;
+          border: none;
+          border-radius: 7px;
+          font-size: 1.08rem;
+          cursor: pointer;
+          box-shadow: 0 2px 8px rgba(99,102,241,0.09);
+          letter-spacing: 0.2px;
+          transition: background 0.2s, box-shadow 0.2s;
+        }
+        .start-btn:hover {
+          background: linear-gradient(90deg, #4338ca 60%, #a21caf 100%);
+          box-shadow: 0 4px 16px rgba(99,102,241,0.15);
+        }
+        .start-error {
+          color: #dc2626;
+          font-size: 0.92rem;
+          margin-top: 3px;
+          font-weight: 500;
+        }
+        @media (max-width: 600px) {
+          .start-bg {
+            padding-top: 100px;
+            padding-bottom: 24px;
+          }
+          .start-card {
+            padding: 28px 8px 22px 8px;
+            margin-top: 0;
+          }
+        }
+      `}</style>
+      <div className="start-bg">
+        <div className="start-card">
+          <img
+            src={Simg}
+            alt="Betty"
+            className="start-img"
+          />
+          <h2 className="start-title">
+            Start Your Mortgage Application
+          </h2>
+          <p className="start-desc">
+            Fill in a few basic details to begin your journey.
+          </p>
+          <form className="start-form" onSubmit={handleSubmit} noValidate>
+            <div className="start-form-group">
+              <label className="start-label" htmlFor="name">Full Name</label>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Enter your full name"
+                className="start-input"
+                autoComplete="off"
+              />
+              {errors.name && <div className="start-error">{errors.name}</div>}
+            </div>
+            <div className="start-form-group">
+              <label className="start-label" htmlFor="email">Email Address</label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="vasudhaghule33@gmail.com"
+                className="start-input"
+                autoComplete="off"
+              />
+              {errors.email && <div className="start-error">{errors.email}</div>}
+            </div>
+            <div className="start-form-group">
+              <label className="start-label" htmlFor="propertyType">Property Type</label>
+              <select
+                id="propertyType"
+                name="propertyType"
+                value={form.propertyType}
+                onChange={handleChange}
+                className="start-select"
+              >
+                <option>Home Purchase</option>
+                <option>Refinance</option>
+                <option>Investment</option>
+              </select>
+            </div>
+            <button
+              type="submit"
+              className="start-btn"
             >
-              <option>Home Purchase</option>
-              <option>Refinance</option>
-              <option>Investment</option>
-            </select>
-          </div>
-
-          <button
-            type="submit"
-            style={hovered ? buttonHoverStyle : buttonStyle}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-          >
-            Start Application
-          </button>
-        </form>
+              Start Application
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
